@@ -1,37 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
-    [SerializeField] float speed;
-    [SerializeField] float jumpForce;
-    public Rigidbody2D playerRigidbody{get; private set;}
-    public CapsuleCollider2D playerCollider{get; private set;}
     public float playerBase{get; private set;}
-    [SerializeField] bool onGround;
+    
 
-    void Start()
+    protected override void Awake()
     {
-        playerCollider = GetComponent<CapsuleCollider2D>();
-        playerRigidbody = GetComponent<Rigidbody2D>();
-        onGround = true;
-
-        playerBase = transform.localScale.y/2;
+        base.Awake();
+        playerBase = transform.localScale.y/2;   
     }
 
     void Update()
     {
-        bool jumpDown = Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
+        bool jumpDown = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
+        bool attackDown = Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow);
 
-        if(jumpDown && (onGround || playerRigidbody.velocity.y == 0)){
-            playerRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            onGround = false;
+        if(attackDown && !attacking){
+            StartCoroutine(AttackingTime());
         }
 
-        if(playerRigidbody.velocity.y == 0){
+        if(jumpDown && (onGround || Rigidbody.velocity.y == 0)){
+            Rigidbody.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+            onGround = false;
+            if(!attacking){
+                SpritesOff();
+                jump.SetActive(true);
+            }
+        }
+
+        if(Rigidbody.velocity.y == 0 && !onGround){
             onGround = true;
+            Walk0On();
         }
     }
 
@@ -39,24 +43,44 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalAxis = Input.GetAxis("Horizontal");
         transform.Translate(Vector2.right * Time.deltaTime * speed * horizontalAxis);
-    }
 
-    void OnCollisionEnter2D(Collision2D collisionInfo)
-    {
-        if(collisionInfo.gameObject.CompareTag("Ground") && playerRigidbody.velocity.y <= 0f){
-            onGround = true;
+        if(Math.Abs(horizontalAxis) > 0){
+            walking = true;
+        } else {
+            walking = false;
+        }
+
+        if((horizontalAxis > 0 && !facingRight) || (horizontalAxis < 0 && facingRight)){
+            MirrorXAxis();
         }
     }
 
-    void OnCollisionExit2D(Collision2D collisionInfo)
+    protected override void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        if(collisionInfo.gameObject.CompareTag("Ground")){
-            StartCoroutine(OnGroundExit());
+        base.OnCollisionEnter2D(collisionInfo);
+
+        if(collisionInfo.gameObject.CompareTag("Enemy")){
+            loseHealth(1);
+            StartCoroutine(InvincibleSeconds());
         }
     }
 
-    IEnumerator OnGroundExit(){
-        yield return new WaitForSeconds(.05f);
-        onGround = false;
+    protected override void IsDead()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    IEnumerator AttackingTime(){
+        attacking = true;
+        invincible = true;
+        bullet.SetActive(true);
+        SpritesOff();
+        attack.SetActive(true);
+        yield return new WaitForSeconds(attackingTime/2);
+        invincible = false;
+        yield return new WaitForSeconds(attackingTime/2);
+        attacking = false;
+        bullet.SetActive(false);
+        Walk0On();
     }
 }

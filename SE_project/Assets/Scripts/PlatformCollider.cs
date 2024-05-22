@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlatformCollider : MonoBehaviour
 {
-    private BoxCollider2D platformCollider;
+    private Collider2D platformCollider;
     private GameObject player;
     private PlayerController playerController;
     private float platformBase;
@@ -13,7 +13,7 @@ public class PlatformCollider : MonoBehaviour
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
 
-        platformCollider = GetComponent<BoxCollider2D>();
+        platformCollider = GetComponent<Collider2D>();
         platformCollider.enabled = false;
 
         platformBase = transform.localScale.y/2;
