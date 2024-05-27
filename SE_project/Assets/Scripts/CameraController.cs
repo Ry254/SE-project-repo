@@ -16,12 +16,6 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         float playerX = player.transform.position.x;
-        float newX = 0;
-        
-        if(!(playerX < initialPosition.x)){
-            newX = 1;
-        }
-
-        transform.position = new Vector3(playerX * newX ,transform.position.y,transform.position.z);
+        transform.position = new Vector3(playerX,transform.position.y,transform.position.z);
     }
 }

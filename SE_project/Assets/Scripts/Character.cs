@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
@@ -9,10 +10,9 @@ public abstract class Character : MonoBehaviour
     public Rigidbody2D Rigidbody{get; protected set;}
     public Collider2D Collider{get; protected set;}
     [SerializeField] protected bool onGround;
-
-    [SerializeField] protected int health = 1;
+    [SerializeField] public int health = 1;
     [SerializeField] protected bool invincible = false;
-    [SerializeField] protected float invincibleSeconds = 2;
+    [SerializeField] protected float invincibleSeconds = 1;
     [SerializeField] protected bool facingRight = true;
     protected GameObject bullet;
     protected GameObject walk0;
@@ -21,6 +21,7 @@ public abstract class Character : MonoBehaviour
     protected GameObject walk3;
     protected GameObject attack;
     protected GameObject jump;
+    protected GameObject death;
     [SerializeField] protected bool attacking;
     [SerializeField] protected bool walking;
     [SerializeField] protected int walkCycle;
@@ -44,8 +45,11 @@ public abstract class Character : MonoBehaviour
         walk3 = transform.GetChild(1).gameObject.transform.GetChild(3).gameObject;
         attack = transform.GetChild(1).gameObject.transform.GetChild(4).gameObject;
         jump = transform.GetChild(1).gameObject.transform.GetChild(5).gameObject;
+        death = transform.GetChild(1).gameObject.transform.GetChild(6).gameObject;
         Walk0On();
+    }
 
+    protected virtual void Start(){
         InvokeRepeating("ChangeWalkSprite", 0, walkCycleTime);
     }
     
@@ -56,9 +60,19 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    protected virtual void Update(){
+        if(health > 0 && Rigidbody.velocity.y == 0 && !onGround){
+            onGround = true;
+            Walk0On();
+        }
+        if(transform.position.y < -2){
+            health = 0;
+        }
+    }
+
     protected virtual void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        if(collisionInfo.gameObject.CompareTag("Ground") && Rigidbody.velocity.y <= 0f){
+        if(collisionInfo.gameObject.CompareTag("Ground") && Rigidbody.velocity.y == 0){
             onGround = true;
         }
     }
@@ -72,19 +86,24 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(gameObject.name + " is in trigger of " + other.gameObject.name);
-        if(other.gameObject.CompareTag("Bullet")){
+        //Debug.Log(gameObject.name + " is in trigger of " + other.gameObject.name);
+        if(other.gameObject.CompareTag("Bullet") && !invincible){
             loseHealth(other.gameObject.GetComponent<Bullet>().attackDamage);                              //change eventualy
             StartCoroutine(InvincibleSeconds());
         }
     }
 
-    protected abstract void IsDead();
+    protected virtual void IsDead(){
+        SpritesOff();
+        death.SetActive(true);
+        Collider.enabled = false;
+        Rigidbody.isKinematic = true;
+        Rigidbody.velocity = new Vector2(0,0);
+        speed = 0;
+    }
 
     protected virtual void loseHealth(int damage){
-        if(!invincible){
-            health -= damage;
-        }
+        health -= damage;
     }
 
     protected virtual void MirrorXAxis(){
@@ -92,7 +111,7 @@ public abstract class Character : MonoBehaviour
         tempScale.x *= -1;
         transform.localScale = tempScale;
         facingRight = !facingRight;
-        Debug.Log("mirror");
+        //Debug.Log("mirror");
     }
 
     protected virtual IEnumerator OnGroundExit(){
@@ -107,7 +126,7 @@ public abstract class Character : MonoBehaviour
     }
 
     protected virtual void ChangeWalkSprite(){
-        if(walking && onGround && !attacking){
+        if(walking && onGround && !attacking && health > 0){
             walkCycle++;
             walkCycle %= 4;
             SpritesOff();
@@ -143,5 +162,6 @@ public abstract class Character : MonoBehaviour
         walk3.SetActive(false);
         attack.SetActive(false);
         jump.SetActive(false);
+        death.SetActive(false);
     }
 }

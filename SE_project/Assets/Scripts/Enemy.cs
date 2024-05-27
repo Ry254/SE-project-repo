@@ -12,6 +12,7 @@ public class Enemy : Character
     [SerializeField] float maxRadius = 5f;
     [SerializeField] float radius;
     Vector3 startPos;
+    private float deathTime = .25f;
     [SerializeField] float turningTime = .75f;
     [SerializeField] int direction;
     [SerializeField] bool chasingPlayer;
@@ -26,8 +27,9 @@ public class Enemy : Character
         InvokeRepeating("RandomDirection", 0, Random.Range(0,3f));
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         radius = transform.position.x - startPos.x;
         if(math.abs(radius) >= maxRadius){
             StartCoroutine(AtMaxRadius());
@@ -71,6 +73,12 @@ public class Enemy : Character
 
     protected override void IsDead()
     {
+        base.IsDead();
+        StartCoroutine(DestroyEnemy());
+    }
+
+    IEnumerator DestroyEnemy(){
+        yield return new WaitForSeconds(deathTime);
         Destroy(gameObject);
-    }   
+    }
 }
