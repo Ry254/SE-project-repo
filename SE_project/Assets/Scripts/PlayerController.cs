@@ -7,8 +7,6 @@ using UnityEngine;
 public class PlayerController : Character
 {
     public float playerBase{get; private set;}
-    [SerializeField] float teleportX = 100;
-
     protected override void Awake()
     {
         base.Awake();
@@ -29,7 +27,7 @@ public class PlayerController : Character
             if(jumpDown && (onGround || Rigidbody.velocity.y == 0)){
                 Rigidbody.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
                 onGround = false;
-                if(!attacking){
+                if(!attacking && !gotHit){
                     SpritesOff();
                     jump.SetActive(true);
                 }
@@ -59,17 +57,6 @@ public class PlayerController : Character
             }
         }
     }
-
-    protected override void LateUpdate()
-    {
-        base.LateUpdate();
-        if(transform.position.x < 0){
-            transform.position = new Vector3(teleportX, transform.position.y, transform.position.z);
-        } else if (transform.position.x > teleportX){
-            transform.position = new Vector3(0, transform.position.y, transform.position.z);
-        }
-    }
-
     protected override void OnCollisionEnter2D(Collision2D collisionInfo)
     {
         base.OnCollisionEnter2D(collisionInfo);

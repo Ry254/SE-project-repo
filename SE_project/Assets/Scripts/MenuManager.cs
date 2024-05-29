@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : BaseManager
 {
     GameObject canvas;
     GameObject titleUI;
@@ -17,9 +17,10 @@ public class MenuManager : MonoBehaviour
 
         BackButton();
     }
-    void Update()
+    override protected void Update()
     {
-        if(Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Space)){
+        base.Update();
+        if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space)){
             StartButton();
         }
     }
@@ -33,5 +34,5 @@ public class MenuManager : MonoBehaviour
     public void BackButton(){
         titleUI.SetActive(true);
         rulesUI.SetActive(false);
-    }
+    }  
 }

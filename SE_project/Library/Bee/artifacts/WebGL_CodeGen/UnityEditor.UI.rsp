@@ -29,20 +29,12 @@
 -define:UNITY_2022_1_OR_NEWER
 -define:UNITY_2022_2_OR_NEWER
 -define:UNITY_2022_3_OR_NEWER
--define:PLATFORM_ARCH_64
--define:UNITY_64
 -define:UNITY_INCLUDE_TESTS
--define:ENABLE_AR
 -define:ENABLE_AUDIO
--define:ENABLE_CACHING
 -define:ENABLE_CLOTH
--define:ENABLE_EVENT_QUEUE
--define:ENABLE_MICROPHONE
 -define:ENABLE_MULTIPLE_DISPLAYS
 -define:ENABLE_PHYSICS
 -define:ENABLE_TEXTURE_STREAMING
--define:ENABLE_VIRTUALTEXTURING
--define:ENABLE_LZMA
 -define:ENABLE_UNITYEVENTS
 -define:ENABLE_VR
 -define:ENABLE_WEBCAM
@@ -67,32 +59,23 @@
 -define:ENABLE_MANAGED_TRANSFORM_JOBS
 -define:ENABLE_MANAGED_ANIMATION_JOBS
 -define:ENABLE_MANAGED_AUDIO_JOBS
+-define:ENABLE_ENGINE_CODE_STRIPPING
+-define:ENABLE_ONSCREEN_KEYBOARD
 -define:ENABLE_MANAGED_UNITYTLS
--define:INCLUDE_DYNAMIC_GI
--define:ENABLE_SCRIPTING_GC_WBARRIERS
--define:PLATFORM_SUPPORTS_MONO
 -define:RENDER_SOFTWARE_CURSOR
 -define:ENABLE_VIDEO
 -define:ENABLE_ACCELERATOR_CLIENT_DEBUGGING
 -define:ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION
 -define:ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT
 -define:ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE
--define:PLATFORM_STANDALONE
+-define:PLATFORM_WEBGL
 -define:TEXTCORE_1_0_OR_NEWER
--define:PLATFORM_STANDALONE_WIN
--define:UNITY_STANDALONE_WIN
--define:UNITY_STANDALONE
--define:ENABLE_RUNTIME_GI
--define:ENABLE_MOVIES
--define:ENABLE_NETWORK
--define:ENABLE_NVIDIA
+-define:UNITY_WEBGL
+-define:UNITY_WEBGL_API
+-define:UNITY_DISABLE_WEB_VERIFICATION
+-define:UNITY_GFX_USE_PLATFORM_VSYNC
 -define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
--define:ENABLE_OUT_OF_PROCESS_CRASH_HANDLER
--define:ENABLE_CLUSTER_SYNC
--define:ENABLE_CLUSTERINPUT
--define:PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP
--define:GFXDEVICE_WAITFOREVENT_MESSAGEPUMP
--define:PLATFORM_INITIALIZES_MEMORY_MANAGER_EXPLICITLY
+-define:ENABLE_SPATIALTRACKING
 -define:ENABLE_MONO
 -define:NET_4_6
 -define:NET_UNITY_4_8
@@ -206,6 +189,7 @@
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/PlaybackEngines/WebGLSupport/Managed/UnityEngine.WebGLModule.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2022.3.25f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/Microsoft.Win32.Primitives.dll"

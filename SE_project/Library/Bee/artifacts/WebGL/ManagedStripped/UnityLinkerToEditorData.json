@@ -586,14 +586,6 @@
             "icon": null
           },
           {
-            "name": "CircleCollider2D",
-            "scenes": [
-              "Assets/Scenes/Main Scene.unity"
-            ],
-            "dependencyType": 0,
-            "icon": null
-          },
-          {
             "name": "Collider2D",
             "scenes": [],
             "dependencyType": 1,
@@ -755,6 +747,7 @@
           {
             "name": "Font",
             "scenes": [
+              "Assets/Scenes/Main Scene.unity",
               "Assets/Scenes/Start Menu.unity"
             ],
             "dependencyType": 0,

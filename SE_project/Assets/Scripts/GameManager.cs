@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseManager
 {
     [SerializeField] int totalEnemies;
     [SerializeField] int playerHealth;
+    
+    [SerializeField] float teleportX = 100;
 
     GameObject player;
     GameObject canvas;
@@ -41,8 +43,9 @@ public class GameManager : MonoBehaviour
         gameEnd = false;
     }
 
-    void Update()
+    override protected void Update()
     {
+        base.Update();
         totalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
         if(playerHealth != playerController.health){
@@ -53,6 +56,14 @@ public class GameManager : MonoBehaviour
             GameOverText();
         } else if (totalEnemies < 1){
             YouWinText();
+        }
+
+        Vector3 playerPos = player.transform.position;
+
+        if(playerPos.x < 0){
+            player.transform.position = new Vector3(teleportX, playerPos.y, playerPos.z);
+        } else if (playerPos.x > teleportX){
+            player.transform.position = new Vector3(0, playerPos.y, playerPos.z);
         }
     }
 
@@ -98,11 +109,6 @@ public class GameManager : MonoBehaviour
         restartBox.SetActive(false);
         youWinText.SetActive(false);
         gameOverText.SetActive(false);
-    }
-
-    public void ResetGame(){
-        SceneManager.LoadScene(0);
-        Debug.Log("clicked");
     }
 
     public void YouWinText(){

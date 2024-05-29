@@ -22,11 +22,13 @@ public abstract class Character : MonoBehaviour
     protected GameObject attack;
     protected GameObject jump;
     protected GameObject death;
+    protected GameObject hit;
     [SerializeField] protected bool attacking;
     [SerializeField] protected bool walking;
     [SerializeField] protected int walkCycle;
     [SerializeField] protected float walkCycleTime = .25f;
     [SerializeField] protected float attackingTime = .1f;
+    [SerializeField] protected bool gotHit;
 
     protected virtual void Awake()
     {
@@ -38,6 +40,7 @@ public abstract class Character : MonoBehaviour
         bullet.SetActive(false);
         attacking = false;
         walking = false;
+        gotHit = false;
 
         walk0 = transform.GetChild(1).gameObject.transform.GetChild(0).gameObject;
         walk1 = transform.GetChild(1).gameObject.transform.GetChild(1).gameObject;
@@ -46,6 +49,7 @@ public abstract class Character : MonoBehaviour
         attack = transform.GetChild(1).gameObject.transform.GetChild(4).gameObject;
         jump = transform.GetChild(1).gameObject.transform.GetChild(5).gameObject;
         death = transform.GetChild(1).gameObject.transform.GetChild(6).gameObject;
+        hit = transform.GetChild(1).gameObject.transform.GetChild(7).gameObject;
         Walk0On();
     }
 
@@ -104,6 +108,17 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void loseHealth(int damage){
         health -= damage;
+        StartCoroutine(GotHit());
+    }
+
+    protected virtual IEnumerator GotHit(){
+        gotHit = true;
+        SpritesOff();
+        bullet.SetActive(false);
+        hit.SetActive(true);
+        yield return new WaitForSeconds(.3f);
+        gotHit = false;
+        Walk0On();
     }
 
     protected virtual void MirrorXAxis(){
@@ -126,7 +141,7 @@ public abstract class Character : MonoBehaviour
     }
 
     protected virtual void ChangeWalkSprite(){
-        if(walking && onGround && !attacking && health > 0){
+        if(walking && onGround && !attacking && health > 0 && !gotHit){
             walkCycle++;
             walkCycle %= 4;
             SpritesOff();
@@ -144,7 +159,7 @@ public abstract class Character : MonoBehaviour
                     walk3.SetActive(true);
                     break;
             }
-        } else if(onGround && !attacking){
+        } else if(onGround && !attacking && !gotHit){
             Walk0On();
         }
     }
@@ -163,5 +178,6 @@ public abstract class Character : MonoBehaviour
         attack.SetActive(false);
         jump.SetActive(false);
         death.SetActive(false);
+        hit.SetActive(false);
     }
 }
