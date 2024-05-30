@@ -11,6 +11,7 @@ ScriptsOnlyBuild:
     Unity.2D.Animation.Editor.dll:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.Animation.Runtime.dll:
+    - UnityEngine.U2D.Animation.BufferManager
     - UnityEngine.U2D.Animation.SpriteSkinComposite
     - UnityEngine.U2D.Animation.SpriteSkinUpdateHelper
     Unity.2D.IK.Editor.dll:
@@ -496,7 +497,7 @@ ScriptsOnlyBuild:
     className: UnityOnDropdownValueChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 65ccbb47e3b97c85827ae303eb5acbb8
+      Hash: 534c1efe54256468f79e2040a2df3a99
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PlayerController
@@ -868,7 +869,7 @@ ScriptsOnlyBuild:
     className: UnityOnTriggerExitMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 79da4ddc681c3860ddf058e75bfc7b61
+      Hash: 6668045b2449769c6b1bc010f855d37b
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: Enemy

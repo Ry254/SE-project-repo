@@ -29,6 +29,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected float walkCycleTime = .25f;
     [SerializeField] protected float attackingTime = .1f;
     [SerializeField] protected bool gotHit;
+    [SerializeField] protected float hitTime = .25f;
 
     protected virtual void Awake()
     {
@@ -90,7 +91,6 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        //Debug.Log(gameObject.name + " is in trigger of " + other.gameObject.name);
         if(other.gameObject.CompareTag("Bullet") && !invincible){
             loseHealth(other.gameObject.GetComponent<Bullet>().attackDamage);                              //change eventualy
             StartCoroutine(InvincibleSeconds());
@@ -116,7 +116,7 @@ public abstract class Character : MonoBehaviour
         SpritesOff();
         bullet.SetActive(false);
         hit.SetActive(true);
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(hitTime);
         gotHit = false;
         Walk0On();
     }

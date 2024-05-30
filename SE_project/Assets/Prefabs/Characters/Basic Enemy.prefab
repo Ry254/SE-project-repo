@@ -198,6 +198,7 @@ MonoBehaviour:
   walkCycleTime: 0.25
   attackingTime: 0.1
   gotHit: 0
+  hitTime: 0.15
   chasingSpeed: 0
   maxRadius: 5
   radius: 0

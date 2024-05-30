@@ -23,8 +23,14 @@ public class GameManager : BaseManager
     PlayerController playerController;
     private bool gameEnd;
 
+    private Camera mainCamera;
+    private Color startingBackground = new Color(1,1,0.8392158f,0);
+    private Color playerHitColor = new Color(1,1,0.75f,0);
+
     void Awake()
     {
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+
         player = GameObject.Find("Player");
         canvas = GameObject.Find("Canvas");
         heart0 = canvas.transform.GetChild(0).gameObject;
@@ -126,6 +132,14 @@ public class GameManager : BaseManager
             restartBox.SetActive(true);
             gameOverText.SetActive(true);
             gameEnd = true;
+        }
+    }
+
+    public void HitBackgroundOn(bool on){
+        if(on){
+            mainCamera.backgroundColor = playerHitColor;
+        } else {
+            mainCamera.backgroundColor = startingBackground;
         }
     }
 }

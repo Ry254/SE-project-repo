@@ -7,10 +7,13 @@ using UnityEngine;
 public class PlayerController : Character
 {
     public float playerBase{get; private set;}
+    private GameManager gameManager;
     protected override void Awake()
     {
         base.Awake();
         playerBase = transform.localScale.y/2;
+
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     protected override void Update()
@@ -84,5 +87,18 @@ public class PlayerController : Character
         attacking = false;
         bullet.SetActive(false);
         Walk0On();
+    }
+
+    protected override IEnumerator GotHit()
+    {
+        gotHit = true;
+        SpritesOff();
+        bullet.SetActive(false);
+        hit.SetActive(true);
+        gameManager.HitBackgroundOn(true);
+        yield return new WaitForSeconds(hitTime);
+        gotHit = false;
+        Walk0On();
+        gameManager.HitBackgroundOn(false);
     }
 }

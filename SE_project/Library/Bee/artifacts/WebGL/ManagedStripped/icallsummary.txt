@@ -66,6 +66,7 @@ UnityEngine.Camera::ScreenToViewportPoint_Injected
 UnityEngine.Camera::SetupCurrent
 UnityEngine.Camera::WorldToScreenPoint_Injected
 UnityEngine.Camera::get_pixelRect_Injected
+UnityEngine.Camera::set_backgroundColor_Injected
 UnityEngine.Camera::get_current
 UnityEngine.Camera::get_main
 UnityEngine.Camera::get_clearFlags

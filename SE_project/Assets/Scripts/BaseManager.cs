@@ -13,7 +13,7 @@ public class BaseManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape)){
             EndGame();
         }
-        if(Input.GetKeyDown(KeyCode.F5)){
+        if(Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.R)){
             ResetGame();
         }
     }
