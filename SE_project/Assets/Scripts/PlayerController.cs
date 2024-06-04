@@ -8,12 +8,26 @@ public class PlayerController : Character
 {
     public float playerBase{get; private set;}
     private GameManager gameManager;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip playerHit;
+    [SerializeField] AudioClip playerJump;
+    [SerializeField] AudioClip playerAttack;
+
+
     protected override void Awake()
     {
         base.Awake();
         playerBase = transform.localScale.y/2;
 
+        audioSource = GetComponent<AudioSource>();
+
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     protected override void Update()
@@ -24,21 +38,21 @@ public class PlayerController : Character
             bool attackDown = Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow);
 
             if(attackDown && !attacking){
+                audioSource.PlayOneShot(playerAttack, .5f);
                 StartCoroutine(AttackingTime());
             }
 
-            if(jumpDown && (onGround || Rigidbody.velocity.y == 0)){
+            if(jumpDown && ((onGround && Rigidbody.velocity.y == 0) || (runOffGround && Rigidbody.velocity.y < 0))){
+                Debug.Log(runOffGround);
                 Rigidbody.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
+
+                audioSource.PlayOneShot(playerJump);
+
                 onGround = false;
                 if(!attacking && !gotHit){
                     SpritesOff();
                     jump.SetActive(true);
                 }
-            }
-
-            if(Rigidbody.velocity.y == 0 && !onGround){
-                onGround = true;
-                Walk0On();
             }
         }
     }
@@ -65,6 +79,7 @@ public class PlayerController : Character
         base.OnCollisionEnter2D(collisionInfo);
 
         if(collisionInfo.gameObject.CompareTag("Enemy") && !invincible){
+            audioSource.PlayOneShot(playerHit);
             loseHealth(1);
             StartCoroutine(InvincibleSeconds());
         }

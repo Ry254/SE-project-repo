@@ -135,6 +135,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
@@ -497,7 +501,7 @@ ScriptsOnlyBuild:
     className: UnityOnDropdownValueChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 534c1efe54256468f79e2040a2df3a99
+      Hash: cb6bf9702e9f042b4a3cd7d99a506b4d
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PlayerController
@@ -593,7 +597,7 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
-      Hash: bc3c1a77bc1e6f3c618fc460f6ef4d03
+      Hash: 94bb04bf62e9476671e1b89dcc68c65e
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: GameManager
@@ -869,7 +873,7 @@ ScriptsOnlyBuild:
     className: UnityOnTriggerExitMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 6668045b2449769c6b1bc010f855d37b
+      Hash: a1c757ce9882dcd220514165fae7c08e
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: Enemy

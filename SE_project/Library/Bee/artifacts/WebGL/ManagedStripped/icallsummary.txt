@@ -50,6 +50,8 @@ UnityEngine.Application::OpenURL
 UnityEngine.Application::Quit
 UnityEngine.Application::get_platform
 UnityEngine.AsyncOperation::InternalDestroy
+UnityEngine.AudioSource::PlayOneShotHelper
+UnityEngine.AudioSource::Stop
 UnityEngine.Behaviour::get_enabled
 UnityEngine.Behaviour::get_isActiveAndEnabled
 UnityEngine.Behaviour::set_enabled

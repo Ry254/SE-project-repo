@@ -10,6 +10,7 @@ public abstract class Character : MonoBehaviour
     public Rigidbody2D Rigidbody{get; protected set;}
     public Collider2D Collider{get; protected set;}
     [SerializeField] protected bool onGround;
+    [SerializeField] protected bool runOffGround;
     [SerializeField] public int health = 1;
     [SerializeField] protected bool invincible = false;
     [SerializeField] protected float invincibleSeconds = 1;
@@ -36,6 +37,7 @@ public abstract class Character : MonoBehaviour
         Collider = GetComponent<Collider2D>();
         Rigidbody = GetComponent<Rigidbody2D>();
         onGround = true;
+        runOffGround = false;
 
         bullet = transform.GetChild(0).gameObject;
         bullet.SetActive(false);
@@ -77,7 +79,7 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        if(collisionInfo.gameObject.CompareTag("Ground") && Rigidbody.velocity.y == 0){
+        if(collisionInfo.gameObject.CompareTag("Ground") && Rigidbody.velocity.y <= 0 && transform.position.y > collisionInfo.gameObject.transform.position.y){
             onGround = true;
         }
     }
@@ -85,14 +87,21 @@ public abstract class Character : MonoBehaviour
     protected virtual void OnCollisionExit2D(Collision2D collisionInfo)
     {
         if(collisionInfo.gameObject.CompareTag("Ground")){
-            StartCoroutine(OnGroundExit());
+            float characterBottom = -gameObject.transform.localScale.y/2 + transform.position.y;
+            float objectTop = collisionInfo.gameObject.transform.localScale.y/2 + transform.position.y;
+
+            if(characterBottom < objectTop){
+                StartCoroutine(OnGroundExit());
+            } else {
+                onGround = false;
+            }
         }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag("Bullet") && !invincible){
-            loseHealth(other.gameObject.GetComponent<Bullet>().attackDamage);                              //change eventualy
+            loseHealth(other.gameObject.GetComponent<Bullet>().attackDamage);
             StartCoroutine(InvincibleSeconds());
         }
     }
@@ -126,11 +135,12 @@ public abstract class Character : MonoBehaviour
         tempScale.x *= -1;
         transform.localScale = tempScale;
         facingRight = !facingRight;
-        //Debug.Log("mirror");
     }
 
     protected virtual IEnumerator OnGroundExit(){
+        runOffGround = true;
         yield return new WaitForSeconds(.05f);
+        runOffGround = false;
         onGround = false;
     }
 
@@ -141,7 +151,7 @@ public abstract class Character : MonoBehaviour
     }
 
     protected virtual void ChangeWalkSprite(){
-        if(walking && onGround && !attacking && health > 0 && !gotHit){
+        if(walking && onGround && Rigidbody.velocity.y == 0 && !attacking && health > 0 && !gotHit){
             walkCycle++;
             walkCycle %= 4;
             SpritesOff();

@@ -188,6 +188,7 @@ MonoBehaviour:
   speed: 1.5
   jumpForce: 0
   onGround: 0
+  runOffGround: 0
   health: 1
   invincible: 0
   invincibleSeconds: 1
@@ -205,6 +206,7 @@ MonoBehaviour:
   turningTime: 0.5
   direction: 0
   chasingPlayer: 0
+  enemyHit: {fileID: 8300000, guid: ca7aececce7aa48e0bc07b33d575a5f1, type: 3}
 --- !u!50 &6436534102662872443
 Rigidbody2D:
   serializedVersion: 4

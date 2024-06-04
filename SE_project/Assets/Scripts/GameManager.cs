@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,11 @@ public class GameManager : BaseManager
     [SerializeField] int playerHealth;
     
     [SerializeField] float teleportX = 100;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip backgroundMusic;
+    [SerializeField] AudioClip youWinMusic;
+    [SerializeField] AudioClip gameOverMusic;
 
     GameObject player;
     GameObject canvas;
@@ -20,6 +26,9 @@ public class GameManager : BaseManager
     GameObject restartBox;
     GameObject youWinText;
     GameObject gameOverText;
+    GameObject enemyCounterSprite;
+    GameObject enemyCounter;
+    TextMeshProUGUI enemyCounterText;
     PlayerController playerController;
     private bool gameEnd;
 
@@ -31,6 +40,8 @@ public class GameManager : BaseManager
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
+        audioSource = GetComponent<AudioSource>();
+
         player = GameObject.Find("Player");
         canvas = GameObject.Find("Canvas");
         heart0 = canvas.transform.GetChild(0).gameObject;
@@ -41,6 +52,10 @@ public class GameManager : BaseManager
         restartBox = canvas.transform.GetChild(5).gameObject;
         youWinText = canvas.transform.GetChild(6).gameObject;
         gameOverText = canvas.transform.GetChild(7).gameObject;
+        enemyCounterSprite = canvas.transform.GetChild(8).gameObject;
+        enemyCounter = canvas.transform.GetChild(9).gameObject;
+
+        enemyCounterText = enemyCounter.GetComponent<TextMeshProUGUI>();
 
         playerController = player.GetComponent<PlayerController>();
         playerHealth = playerController.health;
@@ -52,7 +67,10 @@ public class GameManager : BaseManager
     override protected void Update()
     {
         base.Update();
-        totalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        if(totalEnemies != GameObject.FindGameObjectsWithTag("Enemy").Length){
+            totalEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+            enemyCounterText.text = totalEnemies.ToString();
+        }
 
         if(playerHealth != playerController.health){
             playerHealth = playerController.health;
@@ -123,6 +141,8 @@ public class GameManager : BaseManager
             restartBox.SetActive(true);
             youWinText.SetActive(true);
             gameEnd = true;
+            audioSource.Stop();
+            audioSource.PlayOneShot(youWinMusic, 1);
         }
     }
 
@@ -132,6 +152,8 @@ public class GameManager : BaseManager
             restartBox.SetActive(true);
             gameOverText.SetActive(true);
             gameEnd = true;
+            audioSource.Stop();
+            audioSource.PlayOneShot(gameOverMusic, 1);
         }
     }
 
